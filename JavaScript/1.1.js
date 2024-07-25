@@ -23,4 +23,4 @@ Date.prototype.daysTo = function(targetDate) {
 
 const startDate = new Date('2024-01-01');
 const endDate = new Date('2024-01-10');
-console.log(startDate.daysTo(endDate)); // Output: 9
+console.log(startDate.daysTo(endDate)); 
