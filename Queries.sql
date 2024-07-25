@@ -1,3 +1,4 @@
+-- Query 3.1: Create Database
 CREATE DATABASE UserDB;
 
 USE UserDB;
@@ -58,7 +59,39 @@ VALUES
 (117, 4, 12, '2014-07-13'),
 (120, 5, 15, '2014-06-15');
 
-SELECT * FROM user;
-SELECT * FROM groupMembership;
-SELECT * FROM `group`
+-- SELECT * FROM user;
+-- SELECT * FROM groupMembership;
+-- SELECT * FROM `group`
+
+
+-- Query 3.2:  names of all empty test groups
+SELECT name
+FROM `group`
+WHERE (name LIKE 'TEST -%' OR name LIKE 'TEST-%')
+  AND id NOT IN (SELECT groupID FROM groupMembership);
+
+
+ -- Query 3.3: Users Named Victor Not in Test Groups
+SELECT u.firstName, u.lastName
+FROM user u
+LEFT JOIN groupMembership gm ON u.id = gm.userID
+LEFT JOIN `group` g ON gm.groupID = g.id
+WHERE u.firstName = 'Victor'
+  AND (g.name IS NULL OR (g.name NOT LIKE 'TEST -%' AND g.name NOT LIKE 'TEST-%'))
+GROUP BY u.id, u.firstName, u.lastName;
+
+
+-- Query 3.4: Users Created Before Their Group Membership Groups
+SELECT u.firstName, u.lastName, g.name AS groupName, u.created AS userCreated, g.created AS groupCreated
+FROM user u
+JOIN groupMembership gm ON u.id = gm.userID
+JOIN `group` g ON gm.groupID = g.id
+WHERE u.created < g.created;
+
+
+  
+
+
+
+
 
